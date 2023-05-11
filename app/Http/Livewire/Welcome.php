@@ -16,7 +16,10 @@ class Welcome extends Component
             'message' => 'required'
         ]);
 
-        // Feedback::create($validatedData);
+        Feedback::create($validatedData);
+
+        $this->email = "";
+        $this->message = "";
         session()->flash('info', [
             'type' => 'success',
             'message' => 'Thanks for your feedback!'

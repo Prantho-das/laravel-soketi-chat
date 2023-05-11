@@ -15,6 +15,13 @@ class CreateFeedbackTable extends Migration
     {
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
+            $table->string("email");
+            $table->text("message");
+            $table->boolean("is_read")->default(false);
+            $table->boolean("is_responded")->default(false);
+            $table->string("responded_by")->nullable();
+            $table->text("response")->nullable();
+            $table->timestamp("responded_at")->nullable();
             $table->timestamps();
         });
     }

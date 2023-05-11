@@ -20,7 +20,7 @@ let laravelEcho = new Echo({
     wsHost: process.env.MIX_PUSHER_HOST,
     wsPort: process.env.MIX_PUSHER_PORT,
     wssPort: process.env.MIX_PUSHER_PORT,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER ?? 'ms1',
     forceTLS: false,
     encrypted: true,
     disableStats: true,
