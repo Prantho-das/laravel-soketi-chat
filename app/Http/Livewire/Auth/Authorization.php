@@ -25,7 +25,7 @@ class Authorization extends Component
             'name' => $this->name,
             'email' => $this->email,
             'password' => Hash::make($this->password),
-            'avatar' => 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?s=200&d=mp',
+            'avatar' => env('AVATAR_URL') . $this->name . '.png',
         ]);
         auth()->login($user);
         session()->flash('info', [

@@ -2073,7 +2073,6 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
-/* provided dependency */ var process = __webpack_require__(/*! process/browser.js */ "./node_modules/process/browser.js");
 var _process$env$MIX_PUSH;
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
@@ -2093,7 +2092,7 @@ var laravelEcho = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   wsHost: "127.0.0.1",
   wsPort: "6001",
   wssPort: "6001",
-  cluster: (_process$env$MIX_PUSH = process.env.MIX_PUSHER_APP_CLUSTER) !== null && _process$env$MIX_PUSH !== void 0 ? _process$env$MIX_PUSH : 'ms1',
+  cluster: (_process$env$MIX_PUSH = "mt1") !== null && _process$env$MIX_PUSH !== void 0 ? _process$env$MIX_PUSH : 'ms1',
   forceTLS: false,
   encrypted: true,
   disableStats: true,

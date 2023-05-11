@@ -17,7 +17,9 @@ class CreateChatRoomsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
+            $table->string('banner')->nullable();
             $table->string('description')->nullable();
+            $table->integer('created_by')->nullable();
             $table->string('password')->nullable();
             $table->timestamps();
         });
