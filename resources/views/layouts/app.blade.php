@@ -16,8 +16,10 @@
 <body class="antialiased">
     @livewire('components.common.header')
     {{ $slot }}
+     <script src="{{ asset('js/app.js') }}"></script>
+
     @livewireScripts
-    <script src="{{ asset('js/app.js') }}"></script>
+    @stack('scripts')
 </body>
 
 </html>

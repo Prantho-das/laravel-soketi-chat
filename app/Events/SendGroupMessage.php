@@ -4,13 +4,11 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class SendMessage implements ShouldBroadcast
+class SendGroupMessage implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -26,9 +24,9 @@ class SendMessage implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($data)
     {
-        $this->message = $message;
+        $this->message = $data;
     }
 
     /**
@@ -38,7 +36,7 @@ class SendMessage implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('soketi');
+        return new Channel('soketiGroup.'.$this->message['group_id']);
     }
 
     /**
@@ -53,8 +51,6 @@ class SendMessage implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        return [
-            'message' => $this->message
-        ];
+        return $this->message;
     }
 }

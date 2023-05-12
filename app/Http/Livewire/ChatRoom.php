@@ -4,12 +4,13 @@ namespace App\Http\Livewire;
 
 use App\Models\ChatRoom as ModelsChatRoom;
 use Illuminate\Support\Facades\Hash;
-use Livewire\Component;
 use Illuminate\Support\Str;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class ChatRoom extends Component
-{
-    public $rooms;
+{use WithPagination;
+
     public $name;
     public $description;
     public $password;
@@ -23,11 +24,11 @@ class ChatRoom extends Component
         ]);
         ModelsChatRoom::create([
             'name' => $this->name,
-            'banner' => env('AVATAR_URL') . $this->name . '.png',
             'slug' => Str::slug($this->name),
             'description' => $this->description,
             'created_by' => auth()->id(),
-            'password' => Hash::make($this->password)
+            'banner' => env('AVATAR_URL') . $this->name . '.png',
+            'password' => Hash::make($this->password),
         ]);
 
         $this->name = '';
@@ -41,14 +42,22 @@ class ChatRoom extends Component
     }
     public function mount()
     {
+
+    }
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function render()
+    {
         $rooms = ModelsChatRoom::query();
         if (request()->room == 'mine') {
             $rooms->where('created_by', auth()->id());
         }
-        $this->rooms = $rooms->get();
-    }
-    public function render()
-    {
-        return view('livewire.chat-room');
+    
+        return view('livewire.chat-room', [
+            'rooms' => $rooms->paginate(),
+        ]);
     }
 }

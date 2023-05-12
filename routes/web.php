@@ -19,11 +19,6 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::post('/send-message', function () {
-    $message = request()->message ?? "Hello World";
-    event(new App\Events\SendMessage($message));
-    return response()->json(['status' => 'success', 'status' => 200]);
-});
 Route::get('/', Welcome::class);
 Route::get('/login', Authorization::class)->middleware('guest')->name('login');
 Route::group(['middleware' => ['auth']], function () {
