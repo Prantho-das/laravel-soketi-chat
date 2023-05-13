@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\ChatRoom as ModelsChatRoom;
+use App\Models\GroupUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -14,6 +15,8 @@ class ChatRoom extends Component
     public $name;
     public $description;
     public $password;
+    public $roomIsMine = false;
+    protected $listeners = ['refreshComponent' => '$refresh'];
 
     public function createRoom()
     {
@@ -22,7 +25,7 @@ class ChatRoom extends Component
             'description' => 'required',
             'password' => 'required',
         ]);
-        ModelsChatRoom::create([
+        $group = ModelsChatRoom::create([
             'name' => $this->name,
             'slug' => Str::slug($this->name),
             'description' => $this->description,
@@ -30,11 +33,17 @@ class ChatRoom extends Component
             'banner' => env('AVATAR_URL') . $this->name . '.png',
             'password' => Hash::make($this->password),
         ]);
-
+        GroupUser::create([
+            'group_id' => $group->id,
+            'user_id' => auth()->id(),
+            'user_name' => auth()->user()->name,
+            'user_avatar' => auth()->user()->avatar,
+            'joined_at' => now(),
+        ]);
         $this->name = '';
         $this->description = '';
         $this->password = '';
-
+        $this->emit('refreshComponent');
         session()->flash('info', [
             'message' => 'Room Created Successfully',
             'type' => 'success',
@@ -42,7 +51,7 @@ class ChatRoom extends Component
     }
     public function mount()
     {
-
+        $this->roomIsMine = request()->room == 'mine';
     }
     /**
      * Undocumented function
@@ -52,10 +61,10 @@ class ChatRoom extends Component
     public function render()
     {
         $rooms = ModelsChatRoom::query();
-        if (request()->room == 'mine') {
+        if ($this->roomIsMine) {
             $rooms->where('created_by', auth()->id());
         }
-    
+
         return view('livewire.chat-room', [
             'rooms' => $rooms->paginate(),
         ]);

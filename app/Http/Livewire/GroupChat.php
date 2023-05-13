@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Events\SendGroupMessage;
 use App\Models\ChatRoom;
+use App\Models\GroupUser;
 use App\Models\Message;
 use Livewire\Component;
 
@@ -19,7 +20,7 @@ class GroupChat extends Component
     protected function getListeners()
     {
         $groupId = $this->groupInfo['id'];
-        return ["echo:soketiGroup.{$groupId},SendGroupMessage" => 'newMessage'];
+        return ["echo-private:soketiGroup.{$groupId},SendGroupMessage" => 'newMessage'];
     }
     public function sendMessage()
     {
@@ -55,13 +56,16 @@ class GroupChat extends Component
             'sender_avatar' => $event['sender_avatar'],
             'group_id' => $event['group_id'],
         ];
-        $this->emit('messageSentRefresh', $event['sender_id']==$this->auth->id);
+        $this->emit('messageSentRefresh', $event['sender_id'] == $this->auth->id);
 
     }
     public function mount($roomId)
     {
-        $this->auth = auth()->user();
         $this->groupInfo = ChatRoom::where('slug', $roomId)->firstOrFail();
+        $this->auth = auth()->user();
+        if (!GroupUser::where('group_id', $this->groupInfo['id'])->where('user_id', $this->auth->id)->exists()) {
+            abort(403, 'You are not allowed to view this page');
+        }
         $serverMessage = Message::where('room_id', $this->groupInfo['id'])->get();
         foreach ($serverMessage as $key => $value) {
             $this->messageList[] = [

@@ -25,8 +25,8 @@
                                         class="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">{{ $msg['message'] }}</span>
                                 </div>
                             </div>
-                            <img src="https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
-                                alt="My profile" class="w-6 h-6 rounded-full order-2">
+                            <img src="{{ $msg['sender_avatar'] }}" alt="My profile"
+                                class="w-6 h-6 rounded-full order-2">
                         </div>
                     </div>
                 @else
@@ -38,8 +38,8 @@
                                         {{ $msg['message'] }}
                                     </span></div>
                             </div>
-                            <img src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
-                                alt="My profile" class="w-6 h-6 rounded-full order-1">
+                            <img src="{{ $msg['sender_avatar'] }}" alt="My profile"
+                                class="w-6 h-6 rounded-full order-1">
                         </div>
                     </div>
                 @endif
@@ -131,8 +131,8 @@
         messages.scrollTo(0, messages.scrollHeight);
 
         Livewire.on("messageSentRefresh", user => {
-            if(!user){
-                            showNotification('lara-sok', 'You have a new message')
+            if (!user) {
+                showNotification('lara-sok', 'You have a new message')
 
             }
             messages.scrollTo(0, messages.scrollHeight);

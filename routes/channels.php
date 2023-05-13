@@ -16,8 +16,9 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
-Broadcast::channel('soketiGroup.{groupId}', function ($user,$groupId) {
-    if($user){
-        return true;
-    }
+Broadcast::channel('soketiGroup.{groupId}', function ($user, $groupId) {
+   return $user;
 });
+Broadcast::channel('soketiSingle.{receiverId}', function ($user, $groupId) {
+    return $user;
+ });

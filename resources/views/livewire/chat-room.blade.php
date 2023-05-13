@@ -15,12 +15,16 @@
                                         <h2 class="text-2xl">{{ $room->name }}</h2>
                                     </div>
                                 </div>
-
                             </a>
+                            @if ($room->created_by == auth()->user()->id)
+                                <h1 onclick="copyNow('{{ URL::temporarySignedRoute('room.join', now()->addMinutes(30), ['roomId' => $room->id]) }}')"
+                                    class="copy text-blue-500 cursor-pointer">Copy Link
+                                </h1>
+                            @endif
                         </div>
                     @endforeach
                 </div>
-                {{$rooms->links()}}
+                {{ $rooms->links() }}
             </div>
             <div class="right-box">
 
@@ -74,3 +78,15 @@
     </div>
 
 </div>
+
+@push('scripts')
+    <script>
+        function copyNow(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Copied');
+            }, function(err) {
+                alert('Something went wrong');
+            });
+        }
+    </script>
+@endpush
